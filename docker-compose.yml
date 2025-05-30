@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16.1
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: poc
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  backend:
+    build: ./JoinUsAPI
+    container_name: backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/poc
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+    restart: on-failure
+
+  frontend:
+    build: ./JoinUs
+    container_name: astro_frontend
+    depends_on:
+      - backend
+    ports:
+      - "4321:4321"
+    restart: on-failure
+
+
+volumes:
+  pgdata:

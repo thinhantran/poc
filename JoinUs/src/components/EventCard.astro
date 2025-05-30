@@ -1,0 +1,21 @@
+---
+const { event } = Astro.props;
+function slugify(str: string): string {
+    return str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+const slug = slugify(event.name);
+const date = new Date(event.dateTime);
+---
+
+<a href={`/events/${slug}`} class="event-card">
+    <img src={event.imageUrl} alt={event.name} class="event-image" />
+    <div class="event-info">
+        <h2 class="event-title">{event.name}</h2>
+        <p class="event-detail">
+            <strong>Date:</strong> {date.toLocaleDateString()}<br />
+            <strong>Time:</strong> {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </p>
+        <p class="event-detail"><strong>Location:</strong> {event.location}</p>
+        <p class="event-price"><strong>Price:</strong> {event.price ? `${event.price} €` : 'Free'}</p>
+    </div>
+</a>

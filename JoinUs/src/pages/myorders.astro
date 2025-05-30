@@ -1,0 +1,31 @@
+---
+import MyOrders from '../components/MyOrders.vue';
+import SiteHeader from '../components/SiteHeader.astro';
+
+
+const url = new URL(Astro.request.url);
+const userId = url.searchParams.get('userId') || null;
+
+let orders = [];
+
+if (userId) {
+    const res = await fetch(`http://backend:8080/api/commandes/user/${userId}`);
+    if (res.ok) {
+        orders = await res.json();
+    }
+}else{
+    window.location.href = '/signin'
+}
+---
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>My Orders - JoinUs</title>
+</head>
+<body>
+<SiteHeader/>
+<main>
+    {userId ? <MyOrders client:load orders={orders} userId={userId} /> : <p>Please provide a valid userId.</p>}
+</main>
+</body>
+</html>

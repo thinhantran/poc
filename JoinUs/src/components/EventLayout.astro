@@ -1,0 +1,41 @@
+---
+const { id, title, date, time, location, price, image, description, type } = Astro.props;
+import '../assets/style/events.css';
+import TicketWrapper from './TicketWrapper.vue';
+import Countdown from './Countdown.vue';
+import SiteHeader from './SiteHeader.astro';
+
+---
+<SiteHeader/>
+
+<article class="event-container">
+    <img src={image} alt={title} class="event-image" />
+
+    <div class="event-header">
+        <h1 class="event-title">{title}</h1>
+    </div>
+
+    <div class="event-info">
+        <p>📅 <strong>Date:</strong> {date}</p>
+        <p>⏰ <strong>Time:</strong> {time || 'To be announced'}</p>
+        <p>📍 <strong>Location:</strong> {location}</p>
+        <p><strong>Type:</strong> {type}</p>
+        <p>📝 <strong>Price:</strong> {price} €</p>
+    </div>
+
+    <div class="event-description">
+        <strong>Detail:</strong>
+        <slot />
+    </div>
+
+    <TicketWrapper
+            price={price}
+            title={title}
+            date={date}
+            time={time}
+            image={image}
+            id={id}
+            client:visible
+    />
+    <Countdown eventDate={`${date}T${time || '00:00:00'}`} client:visible />
+</article>

@@ -1,0 +1,24 @@
+{
+  "name": "c-users-trann-onedrive-documents-m2-conference",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro dev --host",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.2.2",
+    "@astrojs/vue": "^5.0.13",
+    "@mdi/font": "^7.4.47",
+    "astro": "^5.7.10",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.1",
+    "lucide-static": "^0.511.0",
+    "qrcode.vue": "^3.6.0",
+    "solid-js": "^1.9.7",
+    "vite": "^6.3.5",
+    "vue": "^3.5.14"
+  }
+}

@@ -1,0 +1,60 @@
+---
+import EventLayout from '../../components/EventLayout.astro';
+
+const slug = Astro.params.slug;
+
+const response = await fetch('http://backend:8080/api/events');
+if (!response.ok) {
+    throw new Error('Failed to fetch events');
+}
+const events: {
+    id: number;
+    name: string;
+    type: string;
+    location: string;
+    dateTime: string;
+    description: string;
+    price: number;
+    imageUrl: string;
+    tickets: any[];
+}[] = await response.json();
+
+function slugify(str: string): string {
+    return str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+
+const event = events.find((e) => slugify(e.name) === slug);
+if (!event) {
+    throw new Error(`No event found for slug: ${slug}`);
+}
+---
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>{event.name}</title>
+    <meta name="description" content={event.description} />
+    <meta property="og:title" content={event.name} />
+    <meta property="og:description" content={event.description} />
+    <meta property="og:image" content={event.imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={event.name} />
+    <meta name="twitter:description" content={event.description} />
+    <meta name="twitter:image" content={event.imageUrl} />
+</head>
+<body>
+<EventLayout
+        id={event.id}
+        title={event.name}
+        description={event.description}
+        image={event.imageUrl}
+        date={new Date(event.dateTime).toLocaleDateString()}
+        time={new Date(event.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        location={event.location}
+        price={event.price}
+        type={event.type}
+>
+    <p>{event.description}</p>
+</EventLayout>
+</body>
+</html>

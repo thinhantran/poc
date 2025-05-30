@@ -1,0 +1,157 @@
+---
+const url = new URL(Astro.request.url);
+const mode = url.searchParams.get('mode') || 'login';
+const isSignUp = mode === 'signup';
+const titleText = `${isSignUp ? 'Sign Up' : 'Log In'} | JoinUs`;
+import '../assets/style/signin.css';
+---
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{titleText}</title>
+    </head>
+    <body>
+        <div class="auth-container">
+            <h1>{titleText}</h1>
+            <form id="auth-form">
+                {isSignUp && (
+                        <>
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        placeholder="Your full name"
+                                />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        required
+                                        placeholder="you@example.com"
+                                />
+                            </div>
+                        </>
+                )}
+
+                <div class="form-group">
+                    <label for={isSignUp ? 'phone' : 'email'}>
+                        {isSignUp ? 'Phone Number' : 'Email Address'}
+                    </label>
+                    <input
+                            type={isSignUp ? 'tel' : 'email'}
+                            id={isSignUp ? 'phone' : 'email'}
+                            name={isSignUp ? 'phone' : 'email'}
+                            required
+                            placeholder={isSignUp ? 'Your phone number' : 'you@example.com'}
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            placeholder="Minimum 8 characters"
+                            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=]).{8,}"
+                            title="At least 8 characters, including upper, lower, number and special character"
+                    />
+                </div>
+
+                <button type="submit" class="btn-submit">Valide</button>
+                <a class="back-link" href="/">← Back to Home</a>
+            </form>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const form = document.getElementById('auth-form') as HTMLFormElement | null;
+                const mode = new URLSearchParams(window.location.search).get('mode') || 'login';
+                if (!form) return;
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const data = new FormData(form);
+                    const payload: Record<string, string> = {};
+
+                    data.forEach((value, key) => {
+                        payload[key] = value.toString();
+                    });
+
+                    if (mode === 'signup') {
+                        try {
+                            const res = await fetch('http://backend:8080/api/users/register', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    fullName: payload.name,
+                                    email: payload.email,
+                                    phone: payload.phone,
+                                    password: payload.password
+                                })
+                            });
+
+                            if (!res.ok) {
+                                const error = await res.text();
+                                alert('Registration failed: ' + error);
+                                return;
+                            }
+
+                            alert('Registration successful! Please log in.');
+                            window.location.href = '/signin?mode=login';
+                        } catch (err) {
+                            const errorMessage = (err instanceof Error) ? err.message : String(err);
+                            alert('Network or server error:: ' + errorMessage);
+                        }
+                    } else {
+                        try {
+                            const res = await fetch('http://backend:8080/api/auth/login', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: payload.email,
+                                    password: payload.password
+                                })
+                            });
+
+                            const contentType = res.headers.get('Content-Type') || '';
+
+                            const isJSON = contentType.includes('application/json');
+                            const responseBody = isJSON ? await res.json() : await res.text();
+
+                            if (!res.ok) {
+                                const message = isJSON
+                                    ? responseBody.message || 'Unknown error'
+                                    : responseBody;
+                                alert('Login failed: ' + message);
+                                return;
+                            }
+
+                            if (isJSON) {
+                                localStorage.setItem('user', JSON.stringify(responseBody));
+                            }
+                            window.location.href = '/';
+                        } catch (err) {
+                            const errorMessage = (err instanceof Error) ? err.message : String(err);
+                            alert('Network or server error: ' + errorMessage);
+                        }
+
+                    }
+                });
+            });
+        </script>
+
+    </body>
+</html>

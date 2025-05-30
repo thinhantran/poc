@@ -1,0 +1,54 @@
+---
+const { selected = '', types = [], currentUrl = '/' } = Astro.props as {
+    selected?: string;
+    types: string[];
+    currentUrl?: string;
+};
+---
+
+<style>
+    .filter-grid {
+        display: flex;
+        margin-top: 2rem;
+        margin-left: auto;
+        margin-right: auto;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+    }
+    .filter-button {
+        padding: 0.6rem 1.2rem;
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        border-radius: 9999px;
+        cursor: pointer;
+        font-weight: 500;
+        color: #1f2937;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+    }
+    .filter-button:hover {
+        background: #f3f4f6;
+        border-color: #d1d5db;
+        transform: scale(1.03);
+    }
+    .filter-button.active {
+        background: #f9cba7;
+        color: #fff;
+        border-color: #f9cba7;
+    }
+</style>
+
+<div class="filter-grid">
+    {types.map((type: string) => {
+        const slug = type.toLowerCase().replace(/\s+/g, '-');
+        const isActive = selected === slug;
+        const href = `${currentUrl}?type=${slug}`;
+
+        return (
+                <a href={href} class={`filter-button ${isActive ? 'active' : ''}`}>
+                    {type}
+                </a>
+        );
+    })}
+</div>

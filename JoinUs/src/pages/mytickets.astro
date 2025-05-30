@@ -1,0 +1,26 @@
+---
+import '../assets/style/myticket.css'
+import PayButton from '../components/PayButton.vue';
+import SiteHeader from '../components/SiteHeader.astro';
+import TicketList from '../components/TicketList.vue';
+---
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>My Tickets | JoinUs</title>
+    </head>
+    <body>
+        <SiteHeader />
+
+        <div class="container">
+            <h1>My Tickets</h1>
+
+            <TicketList client:load />
+
+            <PayButton client:only="vue" />
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+
+    </body>
+</html>

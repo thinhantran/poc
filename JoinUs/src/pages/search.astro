@@ -1,0 +1,69 @@
+---
+import '../assets/style/index.css';
+import SiteHeader from '../components/SiteHeader.astro';
+
+
+const url = new URL(Astro.request.url);
+const searchQuery = url.searchParams.get('name') || '';
+
+let results = [];
+
+if (searchQuery) {
+    const res = await fetch(`http://backend:8080/api/events/search?name=${encodeURIComponent(searchQuery)}`);
+    if (res.ok) {
+        results = await res.json();
+    }
+}
+
+function slugify(str: string): string {
+    return str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+}
+type Event = {
+    id: number;
+    name: string;
+    type: string;
+    location: string;
+    dateTime: string;
+    description: string;
+    price: number;
+    imageUrl: string;
+    tickets: any[];
+};
+---
+
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <title>Search Results - JoinUs</title>
+</head>
+<body class="body">
+<SiteHeader />
+
+<h1 style="text-align:center;">Search Results for "{searchQuery}"</h1>
+
+<main class="events-grid">
+    {results.length > 0 ? (
+        results.map((event: Event) => {
+            const slug = slugify(event.name);
+            const date = new Date(event.dateTime);
+            return (
+                    <a href={`/events/${slug}`} class="event-card">
+                        <img src={event.imageUrl} alt={event.name} class="event-image" />
+                        <div class="event-info">
+                            <h2 class="event-title">{event.name}</h2>
+                            <p class="event-detail">
+                                <strong>Date:</strong> {date.toLocaleDateString()} <br />
+                                <strong>Time:</strong> {date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            <p class="event-detail"><strong>Location:</strong> {event.location}</p>
+                            <p class="event-price"><strong>Price:</strong> {event.price ? `${event.price} €` : 'Free'}</p>
+                        </div>
+                    </a>
+            );
+        })
+    ) : (
+            <p style="text-align:center; grid-column: 1/-1;">No events found.</p>
+    )}
+</main>
+</body>
+</html>
