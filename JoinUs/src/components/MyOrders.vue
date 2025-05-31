@@ -102,15 +102,11 @@ const goToEvent = (eventTitle) => {
   border-radius: 8px;
   box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
   width: 100%;
+  height: 150px;
   max-width: 400px;
   overflow: hidden;
 }
 
-.ticket-image {
-  width: 120px;
-  height: 90px;
-  object-fit: cover;
-}
 
 .ticket-info {
   padding: 0.5rem 1rem;

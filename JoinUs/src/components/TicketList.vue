@@ -12,13 +12,13 @@
         </div>
         <div class="ticket-info">
           <div class="quantity-control">
-            <button @click="updateQuantity(index, -1)">−</button>
+            <button @click.stop="updateQuantity(index, -1)">−</button>
             <span>{{ ticket.quantity }}</span>
-            <button @click="updateQuantity(index, 1)">+</button>
+            <button @click.stop="updateQuantity(index, 1)">+</button>
           </div>
           <div class="price">{{ ticket.total.toFixed(2) }}€</div>
         </div>
-        <button class="delete-btn" @click="deleteTicket(index)">🗑️</button>
+        <button class="delete-btn" @click.stop="deleteTicket(index)">🗑️</button>
       </div>
 
       <div class="total-text">

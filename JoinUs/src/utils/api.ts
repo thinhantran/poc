@@ -1,5 +1,5 @@
 const isBrowser = typeof window !== 'undefined';
 
 export const API_BASE = isBrowser
-    ? "http://localhost:8080"
-    : "http://backend:8080";
+    ? import.meta.env.PUBLIC_API_BASE_BROWSER
+    : import.meta.env.PUBLIC_API_BASE_SERVER;

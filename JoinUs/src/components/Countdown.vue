@@ -1,7 +1,24 @@
 <template>
   <div class="countdown">
     <h3>⏳ Time left to event:</h3>
-    <p>{{ countdownDisplay }}</p>
+    <p v-if="diff<= 0">{{ countdownDisplay }}</p>
+    <div v-else class="countdown-container">
+      <div v-if="days>=1" class="countdown-pad">
+        <span class="number">{{days}}</span>
+        <span v-if="days>1" class="day-unit">Days</span>
+        <span v-else class="day-unit">Day</span>
+
+      </div>
+      <div class="countdown-pad">
+        <span class="number">{{hours}}</span>
+        <span class="day-unit">Hours</span>
+
+      </div>
+      <div class="countdown-pad">
+        <span class="number">{{minutes}}</span>
+        <span class="day-unit">Minutes</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -19,16 +36,18 @@ function padZero(num) {
   return num.toString().padStart(2, '0')
 }
 
+const days = ref(0);
+const hours = ref(0);
+const minutes = ref(0);
+
 const updateCountdown = () => {
   const now = new Date();
   let eventDateISO = props.eventDate;
-  console.log("date :",eventDateISO);
 
   if (props.eventDate.includes('/')) {
     eventDateISO = convertToISO(props.eventDate);
   }
 
-  console.log("date ISO :",eventDateISO);
 
   let eventTime = new Date(eventDateISO);
   if (isNaN(eventTime.getTime())) {
@@ -36,10 +55,8 @@ const updateCountdown = () => {
     const [h, m] = props.eventDate.split(':').map(Number);
     eventTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, 0);
   }
-  console.log("eventTime :",eventTime);
 
   const diff = eventTime - now;
-  console.log("diff :",diff);
 
 
   if (diff <= 0) {
@@ -48,19 +65,16 @@ const updateCountdown = () => {
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  days.value = Math.floor(diff / (1000 * 60 * 60 * 24));
+  hours.value = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  minutes.value = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  console.log("days :",days);
 
   if (days >= 1) {
     countdownDisplay.value = `${days}d ${hours}h ${minutes}m`;
-    console.log("date recul if :",countdownDisplay.value);
   } else {
     countdownDisplay.value = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
-    console.log("date recul else :",countdownDisplay.value);
 
   }
 
@@ -72,11 +86,9 @@ function convertToISO(dateStr) {
   const [timePart, meridian] = timePartWithMeridian.split(' ');
   let [hour, minute] = timePart.split(':').map(Number);
 
-  // Chuyển AM/PM sang 24h format
   if (meridian === 'PM' && hour !== 12) hour += 12;
   if (meridian === 'AM' && hour === 12) hour = 0;
 
-  // Tạo chuỗi ISO chuẩn
   const iso = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
   return iso;
 }
@@ -103,5 +115,34 @@ onUnmounted(() => {
   text-align: center;
   font-weight: 500;
   color: #333;
+}
+
+.countdown-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 400px;
+  justify-self: center;
+}
+
+.countdown-pad {
+
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  width: 100px;
+  background: antiquewhite;
+  padding: 5px 0;
+  box-shadow: 0 0 2px coral;
+}
+.number {
+  color: coral;
+  font-size: 2rem;
+}
+
+.day-unit {
+  color: gray;
+  font-weight: bolder;
+  font-size: .8rem;
 }
 </style>

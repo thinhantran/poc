@@ -3,7 +3,7 @@
     <a href="/about" class="btn">About Project</a>
     <a href="/mytickets" class="btn">My tickets</a>
     <div v-if="user" class="user-menu" style="position:relative; display:inline-block;">
-      <span class="user-name" @click="toggleDropdown" style="cursor:pointer;">
+      <span class="btn" @click="toggleDropdown" style="cursor:pointer;">
         {{ user.fullName || user.email || 'User' }}
       </span>
       <div v-show="dropdownVisible" class="dropdown">
