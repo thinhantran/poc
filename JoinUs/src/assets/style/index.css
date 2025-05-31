@@ -39,7 +39,7 @@ var(--primary-color: #d35400);
     flex: 1;
     margin: 0 24px;
 }
-html{
+*{
     scrollbar-width: none;
 }
 .search-input {
@@ -115,4 +115,8 @@ html{
     font-weight: bold;
     color: #333;
     margin-top: 8px;
+}
+body{
+    margin: 0;
+    padding: 0;
 }

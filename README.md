@@ -5,9 +5,9 @@
 JoinUs est une application web dédiée aux événements, composée de :
 - **Frontend** : Développé avec [Astro](https://astro.build/)
 - **Backend** : API REST développée avec [Spring Boot](https://spring.io/projects/spring-boot)
-- **Docker Compose**
+- **Base de donée** : PostgreSQL
 
-J'ai créé des données virtuelles falsifiées afin que mes données soient en anglais, et pour correspondre à cela, mon projet est également en anglais.
+J'ai créé des données virtuelles falsifiées via faker donc mes données soient en anglais, et pour correspondre à cela, mon projet est également en anglais.
 
 ---
 
@@ -20,7 +20,7 @@ J'ai créé des données virtuelles falsifiées afin que mes données soient en 
 
 ### 2. Démarrer l'application
 
-Dans le dossier racine du projet (Conference), exécutez la commande suivante :
+Dans le dossier racine du projet (poc_conférence), exécutez la commande suivante :
 
 ```bash
 docker compose up --build
@@ -30,7 +30,5 @@ docker compose up --build
 
 Ouvrez votre navigateur et allez à l'adresse suivante :
 
-```
-http://localhost:4321
-```
+[http://localhost:4321](http://localhost:4321)
 
