@@ -1,9 +1,10 @@
 ---
 import EventLayout from '../../components/EventLayout.astro';
+import { API_BASE } from '../../utils/api.ts';
 
 const slug = Astro.params.slug;
 
-const response = await fetch('http://backend:8080/api/events');
+const response = await fetch(`${API_BASE}/api/events`);
 if (!response.ok) {
     throw new Error('Failed to fetch events');
 }

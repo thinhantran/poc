@@ -1,6 +1,7 @@
 ---
 import MyOrders from '../components/MyOrders.vue';
 import SiteHeader from '../components/SiteHeader.astro';
+import { API_BASE } from '../utils/api.ts';
 
 
 const url = new URL(Astro.request.url);
@@ -9,7 +10,7 @@ const userId = url.searchParams.get('userId') || null;
 let orders = [];
 
 if (userId) {
-    const res = await fetch(`http://backend:8080/api/commandes/user/${userId}`);
+    const res = await fetch(`${API_BASE}/api/commandes/user/${userId}`);
     if (res.ok) {
         orders = await res.json();
     }

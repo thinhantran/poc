@@ -32,6 +32,8 @@
 </template>
 
 <script setup>
+import { API_BASE } from '../utils/api.ts';
+
 defineProps({
   orders: {
     type: Array,
@@ -44,7 +46,7 @@ defineProps({
 });
 
 function downloadPDF(commandeId) {
-  const url = `http://backend:8080/api/commandes/download/${commandeId}`;
+  const url = `${API_BASE}/api/commandes/download/${commandeId}`;
   window.open(url, '_blank');
 }
 </script>

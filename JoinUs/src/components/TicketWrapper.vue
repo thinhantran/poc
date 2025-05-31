@@ -5,6 +5,8 @@
 </template>
 
 <script setup>
+import { API_BASE } from '../utils/api.ts';
+
 const props = defineProps({
   price: Number,
   title: String,
@@ -19,7 +21,7 @@ const buyTicket = async () => {
   if (user && user.id) {
     console.log("id event :",props.id, "id user :", user.id);
     try {
-      const response = await fetch('http://backend:8080/api/tickets', {
+      const response = await fetch(`${API_BASE}/api/tickets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -36,8 +38,7 @@ const buyTicket = async () => {
       window.location.href = '/mytickets';
 
     } catch (error) {
-      console.error('Lỗi khi gọi API:', error);
-      alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+      console.error('Error calling API:', error);
     }
 
   } else {
@@ -59,7 +60,7 @@ function addTicketToLocalStorage(newTicket) {
   const tickets = JSON.parse(localStorage.getItem('tickets') || '[]');
 
   const existingTicket = tickets.find(ticket =>
-      ticket.title === newTicket.title &&
+      ticket.eventTitle === newTicket.eventTitle &&
       ticket.date === newTicket.date &&
       ticket.time === newTicket.time
   );

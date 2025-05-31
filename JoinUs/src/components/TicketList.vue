@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { API_BASE } from '../utils/api.ts';
 
 const tickets = ref([])
 const totalAmount = ref(0)
@@ -38,11 +39,12 @@ onMounted(() => {
   const user = JSON.parse(localStorage.getItem('user'))
 
   if (user) {
-    fetch(`http://backend:8080/api/tickets/user/${user.id}`)
+    fetch(`${API_BASE}/api/tickets/user/${user.id}`)
         .then(res => res.json())
         .then(data => {
           tickets.value = data
           localStorage.setItem('tickets', JSON.stringify(data))
+          totalAmount.value = data.reduce((sum, t) => sum + t.total, 0)
         })
         .catch(err => {
           console.error('Error loading tickets:', err)
@@ -74,7 +76,7 @@ const updateQuantity = (index, delta) => {
 
   const user = JSON.parse(localStorage.getItem('user'))
   if (user && ticket.id) {
-    fetch(`http://backend:8080/api/tickets`, {
+    fetch(`${API_BASE}/api/tickets`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: ticket.id, quantity: ticket.quantity })
@@ -92,7 +94,7 @@ const deleteTicket = (index) => {
 
   const user = JSON.parse(localStorage.getItem('user'))
   if (user && ticket.id) {
-    fetch(`http://backend:8080/api/tickets?ticketId=${ticket.id}`, {
+    fetch(`${API_BASE}/api/tickets?ticketId=${ticket.id}`, {
       method: 'DELETE',
     })
         .then(res => {

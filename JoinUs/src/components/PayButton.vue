@@ -10,6 +10,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import TicketForm from './TicketForm.vue'
+import { API_BASE } from '../utils/api.ts';
+
 
 const showForm = ref(false)
 
@@ -18,7 +20,6 @@ const tickets = ref([])
 
 onMounted(() => {
   const userData = localStorage.getItem('user')
-  const ticketsData = localStorage.getItem('tickets')
   if (userData) {
     try {
       user = JSON.parse(userData)
@@ -26,6 +27,11 @@ onMounted(() => {
       console.error('Invalid user data in localStorage')
     }
   }
+
+})
+
+const handlePayClick = async () => {
+  const ticketsData = localStorage.getItem('tickets')
   if (ticketsData) {
     try {
       tickets.value = JSON.parse(ticketsData)
@@ -33,14 +39,10 @@ onMounted(() => {
       console.error('Invalid tickets data in localStorage')
     }
   }
-})
-
-const handlePayClick = async () => {
   if (user) {
     try {
       const ticketIds = tickets.value.map(ticket => ticket.id)
-      console.log("ticketIds :", ticketIds);
-      const response = await fetch('http://backend:8080/api/commandes', {
+      const response = await fetch(`${API_BASE}/api/commandes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -60,7 +62,6 @@ const handlePayClick = async () => {
 
     } catch (err) {
       console.error('Error when booking ticket:', err)
-      alert('An error occurred while booking. Please try again.')
     }
   } else {
     showForm.value = true

@@ -12,6 +12,8 @@
     "@astrojs/node": "^9.2.2",
     "@astrojs/vue": "^5.0.13",
     "@mdi/font": "^7.4.47",
+    "@tabler/icons": "^3.33.0",
+    "@tabler/icons-vue": "^3.33.0",
     "astro": "^5.7.10",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",

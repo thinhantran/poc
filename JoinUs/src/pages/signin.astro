@@ -4,6 +4,8 @@ const mode = url.searchParams.get('mode') || 'login';
 const isSignUp = mode === 'signup';
 const titleText = `${isSignUp ? 'Sign Up' : 'Log In'} | JoinUs`;
 import '../assets/style/signin.css';
+const API_BASE = import.meta.env.PUBLIC_API_BASE_BROWSER;
+const exposeAPIBaseScript = `window.API_BASE = "${API_BASE}";`;
 ---
 
 <html lang="en">
@@ -12,6 +14,8 @@ import '../assets/style/signin.css';
         <title>{titleText}</title>
     </head>
     <body>
+    <script is:inline set:html={exposeAPIBaseScript}>
+    </script>
         <div class="auth-container">
             <h1>{titleText}</h1>
             <form id="auth-form">
@@ -72,7 +76,15 @@ import '../assets/style/signin.css';
             </form>
         </div>
         <script>
+            declare global {
+                interface Window {
+                    API_BASE: string;
+                    }
+                }
             document.addEventListener('DOMContentLoaded', () => {
+
+                const API_BASE = window.API_BASE;
+                console.log("API 2:",API_BASE);
                 const form = document.getElementById('auth-form') as HTMLFormElement | null;
                 const mode = new URLSearchParams(window.location.search).get('mode') || 'login';
                 if (!form) return;
@@ -88,7 +100,7 @@ import '../assets/style/signin.css';
 
                     if (mode === 'signup') {
                         try {
-                            const res = await fetch('http://backend:8080/api/users/register', {
+                            const res = await fetch(`${API_BASE}/api/users/register`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -103,19 +115,16 @@ import '../assets/style/signin.css';
 
                             if (!res.ok) {
                                 const error = await res.text();
-                                alert('Registration failed: ' + error);
                                 return;
                             }
 
-                            alert('Registration successful! Please log in.');
                             window.location.href = '/signin?mode=login';
                         } catch (err) {
                             const errorMessage = (err instanceof Error) ? err.message : String(err);
-                            alert('Network or server error:: ' + errorMessage);
                         }
                     } else {
                         try {
-                            const res = await fetch('http://backend:8080/api/auth/login', {
+                            const res = await fetch(`${API_BASE}/api/auth/login`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -135,7 +144,6 @@ import '../assets/style/signin.css';
                                 const message = isJSON
                                     ? responseBody.message || 'Unknown error'
                                     : responseBody;
-                                alert('Login failed: ' + message);
                                 return;
                             }
 
@@ -145,7 +153,6 @@ import '../assets/style/signin.css';
                             window.location.href = '/';
                         } catch (err) {
                             const errorMessage = (err instanceof Error) ? err.message : String(err);
-                            alert('Network or server error: ' + errorMessage);
                         }
 
                     }

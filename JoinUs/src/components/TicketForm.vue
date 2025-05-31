@@ -30,6 +30,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+import { API_BASE } from '../utils/api.ts';
 
 const props = defineProps({
   visible: Boolean
@@ -55,7 +56,7 @@ const submitForm = async () => {
   try {
     const ticketIds = await createGuestTickets()
 
-    const response = await fetch('http://backend:8080/api/commandes', {
+    const response = await fetch(`${API_BASE}/api/commandes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -78,7 +79,6 @@ const submitForm = async () => {
     showPDF.value = true
   } catch (err) {
     console.error('Booking failed:', err)
-    alert('Booking failed. Please try again later.')
   }
 }
 
@@ -87,7 +87,7 @@ const downloadPDF = async () => {
 
   try {
     console.log("commandeId :", commandeId.value);
-    const response = await fetch(`http://backend:8080/api/commandes/download/${commandeId.value}`, {
+    const response = await fetch(`${API_BASE}/api/commandes/download/${commandeId.value}`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -105,10 +105,24 @@ const downloadPDF = async () => {
     window.URL.revokeObjectURL(url)
   } catch (err) {
     console.error('Error loading ticket:', err)
-    alert('Unable to load ticket. Please try again.')
   }
 }
 
+function formatTo24h(dateStr, timeStr) {
+  const date = new Date(`${dateStr} ${timeStr}`);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return {
+    date: `${day}/${month}/${year}`,
+    time: `${hours}:${minutes}`
+  };
+}
 
 const createGuestTickets = async () => {
   const ticketsData = localStorage.getItem('tickets')
@@ -124,14 +138,19 @@ const createGuestTickets = async () => {
   }
 
   const payload = {
-    tickets: parsedTickets.map(t => ({
-    eventTitle: t.eventTitle,
-    date: t.date,
-    time: t.time,
-    quantity: t.quantity
-  }))}
+    tickets: parsedTickets.map(t => {
+      const { date, time } = formatTo24h(t.date, t.time);
+      return {
+        eventTitle: t.eventTitle,
+        date,
+        time,
+        quantity: t.quantity
+      };
+    })
+  }
 
-  const res = await fetch('http://localhost:8080/api/tickets/guest', {
+  console.log("url :",API_BASE);
+  const res = await fetch(`${API_BASE}/api/tickets/guest`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),

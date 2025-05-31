@@ -1,0 +1,133 @@
+---
+import { IconCheck } from '@tabler/icons-vue';
+import SiteHeader from '../components/SiteHeader.astro';
+
+---
+
+<style>
+    main {
+        max-width: 900px;
+        margin: 3rem auto;
+        padding: 0 1rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+    h1 {
+        color: #e67e22;
+        font-weight: 700;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+    }
+    section {
+        margin-bottom: 2.5rem;
+    }
+    h2 {
+        color: #cf711f;
+        font-weight: 600;
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+        border-left: 5px solid #e67e22;
+        padding-left: 0.5rem;
+    }
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    li {
+        margin-bottom: 0.6rem;
+        display: flex;
+        align-items: center;
+        font-size: 1.05rem;
+    }
+    li svg {
+        stroke: #e67e22;
+        margin-right: 0.6rem;
+        min-width: 22px;
+        min-height: 22px;
+    }
+    p {
+        line-height: 1.6;
+        font-size: 1.1rem;
+    }
+    footer {
+        text-align: center;
+        color: #aaa;
+        margin-top: 3rem;
+        font-size: 0.9rem;
+    }
+</style>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>Présentation Astro - Projet POC</title>
+</head>
+<body>
+<SiteHeader />
+<main>
+    <h1>Présentation d'Astro et son utilisation dans le projet POC</h1>
+
+    <section>
+        <h2>1. Qu'est-ce qu'Astro ?</h2>
+        <p>
+            Astro est un framework moderne permettant de construire des sites web statiques ou dynamiques avec un focus sur
+            <strong>l’optimisation des performances</strong> grâce à :
+        </p>
+        <ul>
+            <li><IconCheck /> Le rendu majoritaire du contenu côté serveur (SSR) ou la génération de sites statiques (SSG).</li>
+            <li><IconCheck /> Le chargement uniquement du JavaScript nécessaire côté client (partial hydration), ce qui réduit le temps de chargement et accélère l’affichage.</li>
+            <li><IconCheck /> Une intégration flexible des frameworks UI populaires tels que Vue, React, Svelte, etc.</li>
+            <li><IconCheck /> La combinaison efficace entre code HTML statique, JS, CSS et composants dynamiques.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>2. Les points forts d'Astro dans le projet</h2>
+        <h3>a) Intégration facile de Vue.js</h3>
+        <p>Vous utilisez Vue pour développer des composants tels que :</p>
+        <ul>
+            <li><IconCheck /> La liste des billets (<code>TicketList.vue</code>)</li>
+            <li><IconCheck /> Le bouton de paiement (<code>PayButton.vue</code>)</li>
+            <li><IconCheck /> La gestion des commandes (<code>MyOrders.vue</code>)</li>
+        </ul>
+        <p>
+            Astro vous permet d’insérer ces composants Vue dans les pages <code>.astro</code> et de ne les hydrater que lorsque c’est nécessaire grâce à des directives comme
+            <code>client:load</code>, <code>client:only="vue"</code>, ce qui maintient la rapidité et limite la surcharge JavaScript.
+        </p>
+
+        <h3>b) Séparation claire entre serveur et client</h3>
+        <p>
+            Le code dans les fichiers <code>.astro</code> s’exécute côté serveur, tandis que le code client (par exemple la vérification de
+            <code>localStorage</code>) est placé dans des composants Vue ou des scripts inline, ce qui améliore la sécurité et l’expérience utilisateur.
+        </p>
+
+        <h3>c) Gestion des tickets et des commandes</h3>
+        <p>
+            La combinaison du stockage <code>localStorage</code> et de l’API backend permet une synchronisation efficace des données, facilitant l’achat hors ligne et la mise à jour lorsque l’utilisateur est en ligne.
+        </p>
+    </section>
+
+    <section>
+        <h2>3. Exploitation optimale d'Astro dans le projet</h2>
+        <ul>
+            <li><IconCheck /> Interface utilisateur professionnelle, optimisée et facilement personnalisable avec des composants Vue et du style scoped.</li>
+            <li><IconCheck /> Optimisation du temps de chargement, réduction du JavaScript superflu.</li>
+            <li><IconCheck /> Gestion simple et sécurisée de l’authentification et des permissions.</li>
+            <li><IconCheck /> Communication fluide et sécurisée avec l’API backend.</li>
+            <li><IconCheck /> Facilité d’extension et d’intégration avec d’autres frameworks frontend si nécessaire.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>4. Conclusion</h2>
+        <p>
+            Astro dans ce projet agit comme un pont flexible entre un rendu serveur rapide, une interface riche et interactive avec Vue, et une communication propre avec l’API backend, permettant ainsi de créer une application web moderne, professionnelle et performante.
+        </p>
+    </section>
+
+    <footer>
+        © 2025 - Projet POC avec Astro & Vue.js
+    </footer>
+</main>
+</body>
+</html>

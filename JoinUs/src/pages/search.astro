@@ -1,6 +1,7 @@
 ---
 import '../assets/style/index.css';
 import SiteHeader from '../components/SiteHeader.astro';
+import { API_BASE } from '../utils/api.ts';
 
 
 const url = new URL(Astro.request.url);
@@ -9,7 +10,7 @@ const searchQuery = url.searchParams.get('name') || '';
 let results = [];
 
 if (searchQuery) {
-    const res = await fetch(`http://backend:8080/api/events/search?name=${encodeURIComponent(searchQuery)}`);
+    const res = await fetch(`${API_BASE}/api/events/search?name=${encodeURIComponent(searchQuery)}`);
     if (res.ok) {
         results = await res.json();
     }

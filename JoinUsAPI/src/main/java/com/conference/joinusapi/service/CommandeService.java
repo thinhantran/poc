@@ -26,7 +26,7 @@ public class CommandeService {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    //private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 
     public Map<String, Object> createCommande(CommandeRequest request) {
@@ -96,7 +96,7 @@ public class CommandeService {
             }).toList();
 
             return CommandeSummaryResponse.builder()
-                    .createdAt(commande.getCreatedAt().format(DATE_TIME_FORMATTER))
+                    .createdAt(commande.getCreatedAt().format(DATE_FORMATTER))
                     .commandeId(commande.getId())
                     .tickets(tickets)
                     .build();
