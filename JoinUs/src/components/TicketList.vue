@@ -4,7 +4,7 @@
       <p>You don't have any tickets yet.</p>
     </div>
     <div v-else>
-      <div v-for="(ticket, index) in tickets" :key="index" class="ticket">
+      <div v-for="(ticket, index) in tickets" :key="index" class="ticket" @click="goToEvent(ticket.eventTitle)">
         <img class="ticket-img" :src="ticket.image" :alt="ticket.eventTitle" />
         <div class="ticket-details">
           <div class="event-title">{{ ticket.eventTitle }}</div>
@@ -105,6 +105,15 @@ const deleteTicket = (index) => {
         })
   }
 }
+const slugify = (str) => {
+  return str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+};
+const goToEvent = (eventTitle) => {
+  if (eventTitle) {
+    const slug = slugify(eventTitle);
+    window.location.href = `/events/${slug}`;
+  }
+};
 </script>
 
 <style scoped>

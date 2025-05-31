@@ -70,7 +70,7 @@ const exposeAPIBaseScript = `window.API_BASE = "${API_BASE}";`;
                             title="At least 8 characters, including upper, lower, number and special character"
                     />
                 </div>
-
+                <div id="error-message" class="error-message" style="color: red; margin-top: 10px;"></div>
                 <button type="submit" class="btn-submit">Valide</button>
                 <a class="back-link" href="/">← Back to Home</a>
             </form>
@@ -84,13 +84,15 @@ const exposeAPIBaseScript = `window.API_BASE = "${API_BASE}";`;
             document.addEventListener('DOMContentLoaded', () => {
 
                 const API_BASE = window.API_BASE;
-                console.log("API 2:",API_BASE);
+                const errorMessage = document.getElementById('error-message');
                 const form = document.getElementById('auth-form') as HTMLFormElement | null;
                 const mode = new URLSearchParams(window.location.search).get('mode') || 'login';
                 if (!form) return;
                 form.addEventListener('submit', async (e) => {
                     e.preventDefault();
-
+                    if (errorMessage) {
+                        errorMessage.textContent = '';
+                    }
                     const data = new FormData(form);
                     const payload: Record<string, string> = {};
 
@@ -115,12 +117,17 @@ const exposeAPIBaseScript = `window.API_BASE = "${API_BASE}";`;
 
                             if (!res.ok) {
                                 const error = await res.text();
+                                if (errorMessage) {
+                                    errorMessage.textContent = 'Your email or password is incorrect. Please try again.';
+                                }
                                 return;
                             }
 
                             window.location.href = '/signin?mode=login';
                         } catch (err) {
-                            const errorMessage = (err instanceof Error) ? err.message : String(err);
+                            if (errorMessage) {
+                                errorMessage.textContent = (err instanceof Error) ? err.message : String(err);
+                            }
                         }
                     } else {
                         try {
@@ -144,6 +151,9 @@ const exposeAPIBaseScript = `window.API_BASE = "${API_BASE}";`;
                                 const message = isJSON
                                     ? responseBody.message || 'Unknown error'
                                     : responseBody;
+                                if (errorMessage) {
+                                    errorMessage.textContent = message;
+                                }
                                 return;
                             }
 
@@ -152,7 +162,9 @@ const exposeAPIBaseScript = `window.API_BASE = "${API_BASE}";`;
                             }
                             window.location.href = '/';
                         } catch (err) {
-                            const errorMessage = (err instanceof Error) ? err.message : String(err);
+                            if(errorMessage){
+                                errorMessage.textContent = (err instanceof Error) ? err.message : String(err);
+                            }
                         }
 
                     }

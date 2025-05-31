@@ -14,7 +14,7 @@
           <h2>Order #{{ order.createdAt }}</h2>
         </div>
         <div class="tickets">
-          <div v-for="ticket in order.tickets" :key="ticket.id" class="ticket">
+          <div v-for="ticket in order.tickets" :key="ticket.id" class="ticket" @click="goToEvent(ticket.eventTitle)">
             <img :src="ticket.image" :alt="ticket.eventTitle" class="ticket-image" />
             <div class="ticket-info">
               <h3>{{ ticket.eventTitle }}</h3>
@@ -49,6 +49,16 @@ function downloadPDF(commandeId) {
   const url = `${API_BASE}/api/commandes/download/${commandeId}`;
   window.open(url, '_blank');
 }
+
+const slugify = (str) => {
+  return str.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+};
+const goToEvent = (eventTitle) => {
+  if (eventTitle) {
+    const slug = slugify(eventTitle);
+    window.location.href = `/events/${slug}`;
+  }
+};
 </script>
 
 <style scoped>

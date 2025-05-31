@@ -22,10 +22,13 @@ function padZero(num) {
 const updateCountdown = () => {
   const now = new Date();
   let eventDateISO = props.eventDate;
+  console.log("date :",eventDateISO);
 
   if (props.eventDate.includes('/')) {
     eventDateISO = convertToISO(props.eventDate);
   }
+
+  console.log("date ISO :",eventDateISO);
 
   let eventTime = new Date(eventDateISO);
   if (isNaN(eventTime.getTime())) {
@@ -33,8 +36,11 @@ const updateCountdown = () => {
     const [h, m] = props.eventDate.split(':').map(Number);
     eventTime = new Date(today.getFullYear(), today.getMonth(), today.getDate(), h, m, 0);
   }
+  console.log("eventTime :",eventTime);
 
   const diff = eventTime - now;
+  console.log("diff :",diff);
+
 
   if (diff <= 0) {
     countdownDisplay.value = 'The event is happening now or already passed!';
@@ -47,17 +53,32 @@ const updateCountdown = () => {
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
+  console.log("days :",days);
+
   if (days >= 1) {
     countdownDisplay.value = `${days}d ${hours}h ${minutes}m`;
+    console.log("date recul if :",countdownDisplay.value);
   } else {
     countdownDisplay.value = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+    console.log("date recul else :",countdownDisplay.value);
+
   }
+
 };
 
 function convertToISO(dateStr) {
-  const [datePart, timePart] = dateStr.split('T');
-  const [day, month, year] = datePart.split('/');
-  return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${timePart}`;
+  const [datePart, timePartWithMeridian] = dateStr.split('T');
+  const [month, day, year] = datePart.split('/').map(Number);
+  const [timePart, meridian] = timePartWithMeridian.split(' ');
+  let [hour, minute] = timePart.split(':').map(Number);
+
+  // Chuyển AM/PM sang 24h format
+  if (meridian === 'PM' && hour !== 12) hour += 12;
+  if (meridian === 'AM' && hour === 12) hour = 0;
+
+  // Tạo chuỗi ISO chuẩn
+  const iso = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
+  return iso;
 }
 
 
