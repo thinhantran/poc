@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +97,7 @@ public class CommandeService {
             }).toList();
 
             return CommandeSummaryResponse.builder()
-                    .createdAt(commande.getCreatedAt().format(DATE_FORMATTER))
+                    .createdAt(String.valueOf(commande.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()))
                     .commandeId(commande.getId())
                     .tickets(tickets)
                     .build();

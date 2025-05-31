@@ -19,7 +19,6 @@ const props = defineProps({
 const buyTicket = async () => {
   const user = JSON.parse(localStorage.getItem('user'));
   if (user && user.id) {
-    console.log("id event :",props.id, "id user :", user.id);
     try {
       const response = await fetch(`${API_BASE}/api/tickets`, {
         method: 'POST',

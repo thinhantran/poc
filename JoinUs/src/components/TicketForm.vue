@@ -86,7 +86,6 @@ const downloadPDF = async () => {
   if (!commandeId.value) return
 
   try {
-    console.log("commandeId :", commandeId.value);
     const response = await fetch(`${API_BASE}/api/commandes/download/${commandeId.value}`, {
       method: 'GET',
       credentials: 'include'
@@ -149,7 +148,6 @@ const createGuestTickets = async () => {
     })
   }
 
-  console.log("url :",API_BASE);
   const res = await fetch(`${API_BASE}/api/tickets/guest`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

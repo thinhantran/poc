@@ -7,7 +7,7 @@ JoinUs est une application web dédiée aux événements, composée de :
 - **Backend** : API REST développée avec [Spring Boot](https://spring.io/projects/spring-boot)
 - **Base de donée** : PostgreSQL
 
-J'ai créé des données virtuelles falsifiées via faker donc mes données soient en anglais, et pour correspondre à cela, mon projet est également en anglais.
+Vous pouvez regarder zone "About projet" dans mon projet pour plus le détail.
 
 ---
 

@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 @Component
 @Profile("dev")
@@ -34,8 +31,14 @@ public class DataSeeder implements CommandLineRunner {
         int numberOfEvents = random.nextInt(501) + 500;
 
         List<Event> events = new ArrayList<>();
+        Set<String> usedNames = new HashSet<>();
 
         for (int i = 0; i < numberOfEvents; i++) {
+            String name = faker.book().title();
+
+            if (usedNames.contains(name)) {
+                continue;
+            }
             LocalDateTime dateTime = faker.date()
                     .future(30, java.util.concurrent.TimeUnit.DAYS)
                     .toInstant()
@@ -45,7 +48,7 @@ public class DataSeeder implements CommandLineRunner {
             String eventType = randomEventType();
 
             Event event = Event.builder()
-                    .name(faker.book().title())
+                    .name(name)
                     .type(eventType)
                     .location(faker.address().fullAddress())
                     .dateTime(dateTime)
@@ -55,6 +58,7 @@ public class DataSeeder implements CommandLineRunner {
                     .build();
 
             events.add(event);
+            usedNames.add(name);
         }
 
         eventRepository.saveAll(events);

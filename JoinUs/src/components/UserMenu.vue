@@ -28,7 +28,6 @@ onMounted(() => {
   const stored = localStorage.getItem('user');
   if (stored) {
     user.value = JSON.parse(stored);
-    console.log("user :", user.value);
   }
 });
 

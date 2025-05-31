@@ -57,8 +57,20 @@ onMounted(() => {
 })
 
 const formatTime = (timeStr) => {
-  return new Date(`1970-01-01T${timeStr}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-}
+  if (!timeStr) return '';
+  const is12hFormat = /am|pm/i.test(timeStr);
+  let date;
+  if (is12hFormat) {
+    date = new Date(`January 1, 1970 ${timeStr}`);
+  } else {
+    date = new Date(`1970-01-01T${timeStr}`);
+  }
+  if (isNaN(date.getTime())) {
+    console.warn('Invalid time string:', timeStr);
+    return timeStr;
+  }
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+};
 
 const updateQuantity = (index, delta) => {
   const ticket = tickets.value[index]

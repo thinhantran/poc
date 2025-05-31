@@ -11,12 +11,14 @@
       </div>
       <div class="countdown-pad">
         <span class="number">{{hours}}</span>
-        <span class="day-unit">Hours</span>
+        <span v-if="hours>1" class="day-unit">Hours</span>
+        <span v-else class="day-unit">Hour</span>
 
       </div>
       <div class="countdown-pad">
         <span class="number">{{minutes}}</span>
-        <span class="day-unit">Minutes</span>
+        <span v-if="minutes>1" class="day-unit">Minutes</span>
+        <span v-else class="day-unit">Minute</span>
       </div>
     </div>
   </div>
