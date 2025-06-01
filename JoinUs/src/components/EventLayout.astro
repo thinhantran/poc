@@ -20,7 +20,7 @@ import SiteHeader from './SiteHeader.astro';
         <p>⏰ <strong>Time:</strong> {time || 'To be announced'}</p>
         <p>📍 <strong>Location:</strong> {location}</p>
         <p><strong>Type:</strong> {type}</p>
-        <p>📝 <strong>Price:</strong> {price} €</p>
+        <p>📝 <strong>Price:</strong> {price?.toFixed(2)} €</p>
     </div>
 
     <div class="event-description">

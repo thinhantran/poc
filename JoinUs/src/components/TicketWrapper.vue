@@ -1,6 +1,6 @@
 <template>
   <button class="ticket-button" @click="buyTicket">
-    {{ price ? `Buy Ticket (${price}€)` : 'Get Free Ticket' }}
+    {{ price ? `Buy Ticket (${price.toFixed(2)}€)` : 'Get Free Ticket' }}
   </button>
 </template>
 
@@ -57,7 +57,6 @@ const buyTicket = async () => {
 
 function addTicketToLocalStorage(newTicket) {
   const tickets = JSON.parse(localStorage.getItem('tickets') || '[]');
-
   const existingTicket = tickets.find(ticket =>
       ticket.eventTitle === newTicket.eventTitle &&
       ticket.date === newTicket.date &&
@@ -66,7 +65,7 @@ function addTicketToLocalStorage(newTicket) {
 
   if (existingTicket) {
     existingTicket.quantity += 1;
-    existingTicket.total = newTicket.price * existingTicket.quantity;
+    existingTicket.total = newTicket.total * existingTicket.quantity;
   } else {
     tickets.push(newTicket);
   }

@@ -16,7 +16,7 @@
             <span>{{ ticket.quantity }}</span>
             <button @click.stop="updateQuantity(index, 1)">+</button>
           </div>
-          <div class="price">{{ ticket.total.toFixed(2) }}€</div>
+          <div class="price">{{ ticket.total?.toFixed(2) }}€</div>
         </div>
         <button class="delete-btn" @click.stop="deleteTicket(index)">🗑️</button>
       </div>

@@ -61,7 +61,7 @@ const types = [...new Set(events.map(e => e.type))];
 					</p>
 					<p class="event-detail"><strong>Location:</strong> {event.location}</p>
 					<p class="event-price">
-						<strong>Price:</strong> {event.price ? `${event.price} €` : 'Free'}
+						<strong>Price:</strong> {event.price ? `${event.price?.toFixed(2)} €` : 'Free'}
 					</p>
 				</div>
 			</a>
