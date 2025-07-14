@@ -22,7 +22,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins(getAllowedOrigins())
+                        .allowedOrigins("https://poc-front-2.onrender.com")
                         .allowedMethods("GET", "POST", "PUT", "DELETE","OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
