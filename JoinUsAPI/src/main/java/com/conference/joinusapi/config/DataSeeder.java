@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Component
-@Profile("dev")
+@Profile({"dev", "prod"})
 public class DataSeeder implements CommandLineRunner {
 
     private final EventRepository eventRepository;
