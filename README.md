@@ -32,3 +32,5 @@ Ouvrez votre navigateur et allez à l'adresse suivante :
 
 [http://localhost:4321](http://localhost:4321)
 
+### 4. Déploiement en ligne
+[JoinUs](https://poc-front-2.onrender.com/)
