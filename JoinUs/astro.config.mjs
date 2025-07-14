@@ -1,9 +1,9 @@
 import { defineConfig } from 'astro/config';
 import vue from '@astrojs/vue';
-import node from '@astrojs/node';
+import staticAdapter from '@astrojs/static';
 
 export default defineConfig({
-    output: 'server',
-    adapter: node({ mode: 'standalone' }),
+    output: 'static',
+    adapter: staticAdapter(),
     integrations: [vue()],
 });
